@@ -1,0 +1,7 @@
+**/.idea
+**/.vscode
+
+**/*cache*
+**/*venv
+
+**/extension-data
