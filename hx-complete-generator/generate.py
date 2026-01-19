@@ -12,10 +12,10 @@ OUTPUT_DIRECTORY = (Path(__file__).parent.parent / 'extension-data').resolve()
 
 
 def main():
-    htmx_atom_feed = 'https://github.com/bigskysoftware/htmx/releases.atom'
-    htmx_version = get_latest_release_version(htmx_atom_feed).lstrip('v')
+    htmx_repo_url = 'https://github.com/bigskysoftware/htmx'
+    htmx_version = get_latest_release_version(htmx_repo_url).lstrip('v')
 
-    htmx_archive_url = f'https://github.com/bigskysoftware/htmx/archive/refs/tags/v{htmx_version}.zip'
+    htmx_archive_url = f'{htmx_repo_url}/archive/refs/tags/v{htmx_version}.zip'
     release_archive = download_release_archive(htmx_archive_url)
 
     attribute_names = get_attribute_names(release_archive, htmx_version)
@@ -23,10 +23,10 @@ def main():
     global_attributes = get_global_attributes(attributes_with_descriptions)
     value_sets = get_value_sets()
 
-    hx_complete_atom_feed = 'https://github.com/pfeif/hx-complete/releases.atom'
-    hx_complete_version = get_latest_release_version(hx_complete_atom_feed)
+    hx_complete_repo_url = 'https://github.com/pfeif/hx-complete'
+    hx_complete_version = get_latest_release_version(hx_complete_repo_url)
 
-    hx_complete_archive_url = f'https://github.com/pfeif/hx-complete/archive/refs/tags/{hx_complete_version}.zip'
+    hx_complete_archive_url = f'{hx_complete_repo_url}/archive/refs/tags/{hx_complete_version}.zip'
     hx_complete_archive = download_release_archive(hx_complete_archive_url)
 
     package_manifest = get_package_manifest(hx_complete_archive)
@@ -150,7 +150,7 @@ def get_value_sets() -> list[ValueSet]:
     swap_values = [
         Value('innerHTML', 'Replace the inner html of the target element'),
         Value('outerHTML', 'Replace the entire target element with the response'),
-        Value('textContext', 'Replace the text content of the target element, without parsing the response as HTML'),
+        Value('textContent', 'Replace the text content of the target element, without parsing the response as HTML'),
         Value('beforebegin', 'Insert the response before the target element'),
         Value('afterbegin', 'Insert the response before the first child of the target element'),
         Value('beforeend', 'Insert the response after the last child of the target element'),
@@ -215,7 +215,7 @@ def get_package_manifest(archive: bytes) -> dict[str, Any]:
 
     :return: a dictionary representing the `package.json` manifest
     """
-    package_manifest: dict[str, Any] = dict()
+    package_manifest: dict[str, Any] = {}
 
     with zipfile.ZipFile(BytesIO(archive)) as source_code:
         try:
